@@ -114,6 +114,28 @@ this value (in bytes). The minor mode can still be forced to be enabled using
   :group 'hideshow
   :type 'integer)
 
+(defcustom hs-fringe-face 'hs-fringe-face
+  "*Specify face used to highlight the fringe on hidden regions."
+  :type 'face
+  :group 'hideshow)
+
+(defface hs-fringe-face
+  '((t (:foreground "#888" :box (:line-width 2 :color "grey75" :style released-button))))
+  "Face used to highlight the fringe on folded regions"
+  :group 'hideshow)
+
+(defcustom hs-face 'hs-face
+  "*Specify the face to to use for the hidden region indicator"
+  :type 'face
+  :group 'hideshow)
+
+(defface hs-face
+  '((t (:background "#ff8" :box t)))
+  "Face to hightlight the ... area of hidden regions"
+  :group 'hideshow)
+
+
+
 (defun hideshowvis-highlight-hs-regions-in-fringe (&optional start end old-text-length)
   "Will update the fringe indicators for all foldable regions in the buffer.
 This can be slow for large buffers. Adjust `hideshowvis-max-file-size' when this
@@ -213,26 +235,6 @@ the end of the line for hidden regions."
   (interactive)
   
   (define-fringe-bitmap 'hs-marker [0 24 24 126 126 24 24 0])
-  
-  (defcustom hs-fringe-face 'hs-fringe-face
-    "*Specify face used to highlight the fringe on hidden regions."
-    :type 'face
-    :group 'hideshow)
-  
-  (defface hs-fringe-face
-    '((t (:foreground "#888" :box (:line-width 2 :color "grey75" :style released-button))))
-    "Face used to highlight the fringe on folded regions"
-    :group 'hideshow)
-  
-  (defcustom hs-face 'hs-face
-    "*Specify the face to to use for the hidden region indicator"
-    :type 'face
-    :group 'hideshow)
-  
-  (defface hs-face
-    '((t (:background "#ff8" :box t)))
-    "Face to hightlight the ... area of hidden regions"
-    :group 'hideshow)
   
   (defun display-code-line-counts (ov)
     (when (eq 'code (overlay-get ov 'hs))
