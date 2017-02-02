@@ -135,6 +135,11 @@ this value (in bytes). The minor mode can still be forced to be enabled using
   :group 'hideshow)
 
 
+(defcustom hideshowvis-hidden-marker
+  "(%d)..."
+  "Text to show instead of folded area"
+  :group 'hideshow)
+
 
 (defun hideshowvis-highlight-hs-regions-in-fringe (&optional start end old-text-length)
   "Will update the fringe indicators for all foldable regions in the buffer.
@@ -240,7 +245,7 @@ the end of the line for hidden regions."
     (when (eq 'code (overlay-get ov 'hs))
       (let* ((marker-string "*fringe-dummy*")
              (marker-length (length marker-string))
-             (display-string (format "(%d)..." (count-lines (overlay-start ov) (overlay-end ov))))
+             (display-string (format hideshowvis-hidden-marker (count-lines (overlay-start ov) (overlay-end ov))))
              )
         (overlay-put ov 'help-echo "Hiddent text. C-c,= to show")
         (put-text-property 0 marker-length 'display (list 'left-fringe 'hs-marker 'hs-fringe-face) marker-string)
