@@ -93,6 +93,7 @@
 ;;
 
 (define-fringe-bitmap 'hideshowvis-hideable-marker [0 0 0 126 126 0 0 0])
+(define-fringe-bitmap 'hs-marker [0 24 24 126 126 24 24 0])
 
 (defconst hideshowvis-version "v0.6" "Version of hideshowvis minor mode")
 
@@ -140,6 +141,16 @@ this value (in bytes). The minor mode can still be forced to be enabled using
   "Text to show instead of folded area"
   :group 'hideshow)
 
+(defcustom hideshowvis-fringe-hidden-marker
+  'hs-marker
+  "Fringe bitmap to display on folded lines"
+  :group 'hideshowvis)
+
+(defcustom hideshowvis-fringe-hideable-marker
+  'hideshowvis-hideable-marker
+  "Fringe bitmap to display on foldable lines"
+  :group 'hideshowvis)
+
 
 (defun hideshowvis-highlight-hs-regions-in-fringe (&optional start end old-text-length)
   "Will update the fringe indicators for all foldable regions in the buffer.
@@ -174,7 +185,7 @@ happens for you."
                                  (length marker-string)
                                  'display
                                  (list 'left-fringe
-                                       'hideshowvis-hideable-marker
+                                       hideshowvis-fringe-hideable-marker
                                        'hideshowvis-hidable-face)
                                  marker-string)
               (overlay-put ovl 'before-string marker-string)
@@ -239,8 +250,6 @@ and a yellow marker indicating the number of hidden lines at
 the end of the line for hidden regions."
   (interactive)
   
-  (define-fringe-bitmap 'hs-marker [0 24 24 126 126 24 24 0])
-  
   (defun display-code-line-counts (ov)
     (when (eq 'code (overlay-get ov 'hs))
       (let* ((marker-string "*fringe-dummy*")
@@ -248,7 +257,7 @@ the end of the line for hidden regions."
              (display-string (format hideshowvis-hidden-marker (count-lines (overlay-start ov) (overlay-end ov))))
              )
         (overlay-put ov 'help-echo "Hiddent text. C-c,= to show")
-        (put-text-property 0 marker-length 'display (list 'left-fringe 'hs-marker 'hs-fringe-face) marker-string)
+        (put-text-property 0 marker-length 'display (list 'left-fringe hideshowvis-fringe-hidden-marker 'hs-fringe-face) marker-string)
         (overlay-put ov 'before-string marker-string)
         (put-text-property 0 (length display-string) 'face 'hs-face display-string)
         (overlay-put ov 'display display-string)
